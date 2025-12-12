@@ -1,8 +1,8 @@
 package oncall.controller;
 
-import oncall.domain.DayOfWeek;
+import oncall.controller.dto.MonthAndStartDayOfWeek;
+import oncall.controller.parser.EmergencyWorkInputParser;
 import oncall.domain.EmergencyWorkers;
-import oncall.domain.Month;
 import oncall.domain.Workers;
 import oncall.view.InputView;
 import oncall.view.OutputView;
@@ -10,6 +10,7 @@ import oncall.view.OutputView;
 public class EmergencyWorkAssignment {
     private final InputView inputView = new InputView();
     private final OutputView outputView = new OutputView();
+    private final EmergencyWorkInputParser parser = new EmergencyWorkInputParser();
 
     public void run() {
         MonthAndStartDayOfWeek monthAndStartDayOfWeek = requestInputMonthAndStartDayOfWeek();
@@ -21,19 +22,11 @@ public class EmergencyWorkAssignment {
             try {
                 outputView.askMonthAndStartDayOfWeek();
                 String input = inputView.read();
-                return parseMonthAndStartDayOfWeek(input);
+                return parser.parseMonthAndStartDayOfWeek(input);
             } catch (Exception e) {
                 outputView.showErrorMessage();
             }
         }
-    }
-
-    private MonthAndStartDayOfWeek parseMonthAndStartDayOfWeek(String input) {
-        String[] parts = input.split(",");
-        Month month = Month.of(parts[0]);
-        DayOfWeek dayOfWeek = DayOfWeek.of(parts[1]);
-
-        return new MonthAndStartDayOfWeek(month, dayOfWeek);
     }
 
     private Workers requestInputWeekdaysWorkers() {
@@ -41,7 +34,7 @@ public class EmergencyWorkAssignment {
             try {
                 outputView.askWeekdaysWorkers();
                 String input = inputView.read();
-                return parseWorkers(input);
+                return parser.parseWorkers(input);
             } catch (Exception e) {
                 outputView.showErrorMessage();
             }
@@ -53,16 +46,11 @@ public class EmergencyWorkAssignment {
             try {
                 outputView.askWeekendsWorkers();
                 String input = inputView.read();
-                return parseWorkers(input);
+                return parser.parseWorkers(input);
             } catch (Exception e) {
                 outputView.showErrorMessage();
             }
         }
-    }
-
-    private Workers parseWorkers(String input) {
-        String[] inputWorkers = input.split(",");
-        return Workers.from(inputWorkers);
     }
 
     private EmergencyWorkers getEmergencyWorkers() {
@@ -75,11 +63,5 @@ public class EmergencyWorkAssignment {
                 outputView.showErrorMessage();
             }
         }
-    }
-
-    private record MonthAndStartDayOfWeek(
-            Month month,
-            DayOfWeek startDayOfWeek
-    ) {
     }
 }
