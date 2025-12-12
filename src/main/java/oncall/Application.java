@@ -1,7 +1,10 @@
 package oncall;
 
+import oncall.controller.EmergencyWorkAssignment;
+
 public class Application {
     public static void main(String[] args) {
-        // TODO: 프로그램 구현
+        EmergencyWorkAssignment emergencyWorkAssignment = new EmergencyWorkAssignment();
+        emergencyWorkAssignment.run();
     }
 }
