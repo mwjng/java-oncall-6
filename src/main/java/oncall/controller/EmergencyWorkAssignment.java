@@ -4,7 +4,6 @@ import oncall.domain.DayOfWeek;
 import oncall.domain.EmergencyWorkers;
 import oncall.domain.Month;
 import oncall.domain.Workers;
-import oncall.dto.MonthAndStartDayInput;
 import oncall.view.InputView;
 import oncall.view.OutputView;
 
@@ -13,40 +12,74 @@ public class EmergencyWorkAssignment {
     private final OutputView outputView = new OutputView();
 
     public void run() {
-        MonthAndStartDayInput monthAndStartDayInput = requestInputMonthAndStartDayOfWeek();
-        Month month = Month.of(monthAndStartDayInput.month());
-        DayOfWeek dayOfWeek = DayOfWeek.of(monthAndStartDayInput.startDayOfWeek());
-
-        Workers weekdaysWorkers = requestInputWeekdaysWorkers();
-        Workers weekendsWorkers = requestInputWeekendsWorkers();
-        EmergencyWorkers emergencyWorkers = EmergencyWorkers.of(weekdaysWorkers, weekendsWorkers);
+        MonthAndStartDayOfWeek monthAndStartDayOfWeek = requestInputMonthAndStartDayOfWeek();
+        EmergencyWorkers emergencyWorkers = getEmergencyWorkers();
     }
 
-    private MonthAndStartDayInput requestInputMonthAndStartDayOfWeek() {
-        outputView.askMonthAndStartDayOfWeek();
-        String input = inputView.read();
-        return parseMonthAndStartDayInput(input);
+    private MonthAndStartDayOfWeek requestInputMonthAndStartDayOfWeek() {
+        while (true) {
+            try {
+                outputView.askMonthAndStartDayOfWeek();
+                String input = inputView.read();
+                return parseMonthAndStartDayOfWeek(input);
+            } catch (Exception e) {
+                outputView.showErrorMessage();
+            }
+        }
     }
 
-    private MonthAndStartDayInput parseMonthAndStartDayInput(String input) {
+    private MonthAndStartDayOfWeek parseMonthAndStartDayOfWeek(String input) {
         String[] parts = input.split(",");
-        return new MonthAndStartDayInput(parts[0], parts[1]);
+        Month month = Month.of(parts[0]);
+        DayOfWeek dayOfWeek = DayOfWeek.of(parts[1]);
+
+        return new MonthAndStartDayOfWeek(month, dayOfWeek);
     }
 
     private Workers requestInputWeekdaysWorkers() {
-        outputView.askWeekdaysWorkers();
-        String input = inputView.read();
-        return parseWorkers(input);
+        while (true) {
+            try {
+                outputView.askWeekdaysWorkers();
+                String input = inputView.read();
+                return parseWorkers(input);
+            } catch (Exception e) {
+                outputView.showErrorMessage();
+            }
+        }
     }
 
     private Workers requestInputWeekendsWorkers() {
-        outputView.askWeekendsWorkers();
-        String input = inputView.read();
-        return parseWorkers(input);
+        while (true) {
+            try {
+                outputView.askWeekendsWorkers();
+                String input = inputView.read();
+                return parseWorkers(input);
+            } catch (Exception e) {
+                outputView.showErrorMessage();
+            }
+        }
     }
 
     private Workers parseWorkers(String input) {
         String[] inputWorkers = input.split(",");
         return Workers.from(inputWorkers);
+    }
+
+    private EmergencyWorkers getEmergencyWorkers() {
+        while (true) {
+            try {
+                Workers weekdaysWorkers = requestInputWeekdaysWorkers();
+                Workers weekendsWorkers = requestInputWeekendsWorkers();
+                return EmergencyWorkers.of(weekdaysWorkers, weekendsWorkers);
+            } catch (Exception e) {
+                outputView.showErrorMessage();
+            }
+        }
+    }
+
+    private record MonthAndStartDayOfWeek(
+            Month month,
+            DayOfWeek startDayOfWeek
+    ) {
     }
 }
