@@ -1,5 +1,6 @@
 package oncall.controller;
 
+import java.util.function.Supplier;
 import oncall.controller.dto.MonthAndStartDayOfWeek;
 import oncall.controller.parser.EmergencyWorkInputParser;
 import oncall.domain.EmergencyWorkers;
@@ -18,49 +19,43 @@ public class EmergencyWorkAssignment {
     }
 
     private MonthAndStartDayOfWeek requestInputMonthAndStartDayOfWeek() {
-        while (true) {
-            try {
-                outputView.askMonthAndStartDayOfWeek();
-                String input = inputView.read();
-                return parser.parseMonthAndStartDayOfWeek(input);
-            } catch (Exception e) {
-                outputView.showErrorMessage();
-            }
-        }
-    }
-
-    private Workers requestInputWeekdaysWorkers() {
-        while (true) {
-            try {
-                outputView.askWeekdaysWorkers();
-                String input = inputView.read();
-                return parser.parseWorkers(input);
-            } catch (Exception e) {
-                outputView.showErrorMessage();
-            }
-        }
-    }
-
-    private Workers requestInputWeekendsWorkers() {
-        while (true) {
-            try {
-                outputView.askWeekendsWorkers();
-                String input = inputView.read();
-                return parser.parseWorkers(input);
-            } catch (Exception e) {
-                outputView.showErrorMessage();
-            }
-        }
+        return repeatUntilSuccess(() -> {
+            outputView.askMonthAndStartDayOfWeek();
+            String input = inputView.read();
+            return parser.parseMonthAndStartDayOfWeek(input);
+        });
     }
 
     private EmergencyWorkers getEmergencyWorkers() {
+        return repeatUntilSuccess(() -> {
+            Workers weekdaysWorkers = requestInputWeekdaysWorkers();
+            Workers weekendsWorkers = requestInputWeekendsWorkers();
+            return EmergencyWorkers.of(weekdaysWorkers, weekendsWorkers);
+        });
+    }
+
+    private Workers requestInputWeekdaysWorkers() {
+        return repeatUntilSuccess(() -> {
+            outputView.askWeekdaysWorkers();
+            String input = inputView.read();
+            return parser.parseWorkers(input);
+        });
+    }
+
+    private Workers requestInputWeekendsWorkers() {
+        return repeatUntilSuccess(() -> {
+            outputView.askWeekendsWorkers();
+            String input = inputView.read();
+            return parser.parseWorkers(input);
+        });
+    }
+
+    private <T> T repeatUntilSuccess(Supplier<T> action) {
         while (true) {
             try {
-                Workers weekdaysWorkers = requestInputWeekdaysWorkers();
-                Workers weekendsWorkers = requestInputWeekendsWorkers();
-                return EmergencyWorkers.of(weekdaysWorkers, weekendsWorkers);
-            } catch (Exception e) {
-                outputView.showErrorMessage();
+                return action.get();
+            } catch (IllegalArgumentException e) {
+                outputView.showErrorMessage(e.getMessage());
             }
         }
     }
