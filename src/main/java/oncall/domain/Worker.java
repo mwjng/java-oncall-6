@@ -39,6 +39,10 @@ public class Worker {
         return Objects.hashCode(nickname);
     }
 
+    public String getNickname() {
+        return nickname;
+    }
+
     private void validateLength(String nickname) {
         if (isInvalidLength(nickname)) {
             throw new IllegalArgumentException(

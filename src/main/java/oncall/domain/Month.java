@@ -35,4 +35,12 @@ public enum Month {
     public boolean isOutOfRange(int day) {
         return day < 1 || day > daysInMonth;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getDaysInMonth() {
+        return daysInMonth;
+    }
 }

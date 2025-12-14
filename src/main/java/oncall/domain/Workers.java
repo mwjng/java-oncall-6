@@ -1,5 +1,6 @@
 package oncall.domain;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class Workers {
     }
 
     public List<Worker> getWorkers() {
-        return List.copyOf(workers);
+        return new ArrayList<>(workers);
     }
 
     private void validateCount(List<Worker> workers) {

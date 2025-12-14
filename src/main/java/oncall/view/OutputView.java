@@ -1,5 +1,12 @@
 package oncall.view;
 
+import java.util.List;
+import oncall.domain.Date;
+import oncall.domain.DayOfWeek;
+import oncall.domain.Month;
+import oncall.domain.Workday;
+import oncall.domain.Worker;
+
 public class OutputView {
 
     public void askMonthAndStartDayOfWeek() {
@@ -16,5 +23,22 @@ public class OutputView {
 
     public void showErrorMessage(String message) {
         System.out.println("[ERROR] " + message + " 다시 입력해 주세요.");
+    }
+
+    public void showEmergencyWorkersResult(List<Workday> workdays) {
+        for (Workday workday : workdays) {
+            Date date = workday.getDate();
+            Worker worker = workday.getWorker();
+
+            Month month = date.getMonth();
+            int day = date.getDay();
+            DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+            if (date.isHoliday() && !dayOfWeek.isWeekend()) {
+                System.out.println(month.getName() + " " + day + "일 " + dayOfWeek.getName() + "(휴일) " + worker.getNickname());
+                continue;
+            }
+            System.out.println(month.getName() + " " + day + "일 " + dayOfWeek.getName() + " " + worker.getNickname());
+        }
     }
 }

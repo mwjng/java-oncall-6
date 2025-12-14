@@ -1,9 +1,12 @@
 package oncall.controller;
 
+import java.util.List;
 import java.util.function.Supplier;
 import oncall.controller.dto.MonthAndStartDayOfWeek;
 import oncall.controller.parser.EmergencyWorkInputParser;
+import oncall.domain.AssignmentService;
 import oncall.domain.EmergencyWorkers;
+import oncall.domain.Workday;
 import oncall.domain.Workers;
 import oncall.view.InputView;
 import oncall.view.OutputView;
@@ -13,9 +16,20 @@ public class EmergencyWorkAssignment {
     private final OutputView outputView = new OutputView();
     private final EmergencyWorkInputParser parser = new EmergencyWorkInputParser();
 
+    private final AssignmentService assignmentService = new AssignmentService();
+
     public void run() {
         MonthAndStartDayOfWeek monthAndStartDayOfWeek = requestInputMonthAndStartDayOfWeek();
         EmergencyWorkers emergencyWorkers = getEmergencyWorkers();
+
+        List<Workday> workdays = assignmentService.assignment(
+                monthAndStartDayOfWeek.month(),
+                monthAndStartDayOfWeek.startDayOfWeek(),
+                emergencyWorkers.getWeekdaysWorkers(),
+                emergencyWorkers.getWeekendsWorkers()
+        );
+
+        outputView.showEmergencyWorkersResult(workdays);
     }
 
     private MonthAndStartDayOfWeek requestInputMonthAndStartDayOfWeek() {

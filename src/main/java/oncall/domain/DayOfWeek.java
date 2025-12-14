@@ -24,4 +24,19 @@ public enum DayOfWeek {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("올바르지 않은 요일 입니다."));
     }
+
+    public boolean isWeekend() {
+        return this == SATURDAY || this == SUNDAY;
+    }
+
+    public DayOfWeek next() {
+        if (this == SUNDAY) {
+            return MONDAY;
+        }
+        return DayOfWeek.values()[ordinal() + 1];
+    }
+
+    public String getName() {
+        return name;
+    }
 }

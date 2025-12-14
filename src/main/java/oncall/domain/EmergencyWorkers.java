@@ -1,6 +1,7 @@
 package oncall.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class EmergencyWorkers {
@@ -15,6 +16,14 @@ public class EmergencyWorkers {
 
     public static EmergencyWorkers of(Workers weekdaysWorkers, Workers weekendsWorkers) {
         return new EmergencyWorkers(weekdaysWorkers, weekendsWorkers);
+    }
+
+    public List<Worker> getWeekdaysWorkers() {
+        return weekdaysWorkers.getWorkers();
+    }
+
+    public List<Worker> getWeekendsWorkers() {
+        return weekendsWorkers.getWorkers();
     }
 
     private void validateIncludeBothSides(Workers weekdaysWorkers, Workers weekendsWorkers) {
