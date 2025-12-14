@@ -32,8 +32,16 @@ public enum Month {
                 .orElseThrow(() -> new IllegalArgumentException("올바르지 않은 월입니다."));
     }
 
+    public boolean isLastDayOfMonth(int day) {
+        return daysInMonth == day;
+    }
+
     public boolean isOutOfRange(int day) {
         return day < 1 || day > daysInMonth;
+    }
+
+    public Month nextMonth() {
+        return values()[(ordinal() + 1) % 12];
     }
 
     public int getMonthNumber() {

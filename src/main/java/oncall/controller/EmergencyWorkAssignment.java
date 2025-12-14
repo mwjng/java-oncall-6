@@ -22,11 +22,10 @@ public class EmergencyWorkAssignment {
         MonthAndStartDayOfWeek monthAndStartDayOfWeek = requestInputMonthAndStartDayOfWeek();
         EmergencyWorkers emergencyWorkers = getEmergencyWorkers();
 
-        List<Workday> workdays = assignmentService.assignment(
+        List<Workday> workdays = assignmentService.assign(
                 monthAndStartDayOfWeek.month(),
                 monthAndStartDayOfWeek.startDayOfWeek(),
-                emergencyWorkers.getWeekdaysWorkers(),
-                emergencyWorkers.getWeekendsWorkers()
+                emergencyWorkers
         );
 
         outputView.showEmergencyWorkersResult(workdays);

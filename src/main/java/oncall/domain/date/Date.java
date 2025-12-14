@@ -18,12 +18,23 @@ public class Date {
         return new Date(month, day, dayOfWeek);
     }
 
+    public static Date firstDayOfMonth(Month month, DayOfWeek dayOfWeek) {
+        return of(month, 1, dayOfWeek);
+    }
+
     public boolean isHoliday() {
         if (dayOfWeek.isWeekend()) {
             return true;
         }
         Optional<Holiday> holiday = Holiday.findBy(month, day);
         return holiday.isPresent();
+    }
+
+    public Date nextDay() {
+        if (month.isLastDayOfMonth(day)) {
+            return firstDayOfMonth(month.nextMonth(), dayOfWeek.next());
+        }
+        return of(month, day + 1, dayOfWeek.next());
     }
 
     public Month getMonth() {

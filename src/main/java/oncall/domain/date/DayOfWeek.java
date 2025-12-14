@@ -12,8 +12,6 @@ public enum DayOfWeek {
     SATURDAY("토"),
     SUNDAY("일");
 
-    private static final DayOfWeek[] DAYS = DayOfWeek.values();
-
     private final String displayName;
 
     DayOfWeek(String displayName) {
@@ -21,7 +19,7 @@ public enum DayOfWeek {
     }
 
     public static DayOfWeek of(String input) {
-        return Arrays.stream(DAYS)
+        return Arrays.stream(values())
                 .filter(day -> day.displayName.equals(input))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("올바르지 않은 요일입니다."));
@@ -32,7 +30,7 @@ public enum DayOfWeek {
     }
 
     public DayOfWeek next() {
-        return DAYS[(ordinal() + 1) % DAYS.length];
+        return values()[(ordinal() + 1) % 7];
     }
 
     public String getDisplayName() {

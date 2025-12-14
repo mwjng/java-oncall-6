@@ -18,12 +18,12 @@ public class EmergencyWorkers {
         return new EmergencyWorkers(weekdaysWorkers, weekendsWorkers);
     }
 
-    public List<Worker> getWeekdaysWorkers() {
-        return weekdaysWorkers.getWorkers();
+    public Workers getWeekdaysWorkers() {
+        return weekdaysWorkers;
     }
 
-    public List<Worker> getWeekendsWorkers() {
-        return weekendsWorkers.getWorkers();
+    public Workers getWeekendsWorkers() {
+        return weekendsWorkers;
     }
 
     private void validateIncludeBothSides(Workers weekdaysWorkers, Workers weekendsWorkers) {
