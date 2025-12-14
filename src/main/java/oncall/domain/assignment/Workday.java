@@ -1,4 +1,7 @@
-package oncall.domain;
+package oncall.domain.assignment;
+
+import oncall.domain.date.Date;
+import oncall.domain.worker.Worker;
 
 public class Workday {
     private final Worker worker;

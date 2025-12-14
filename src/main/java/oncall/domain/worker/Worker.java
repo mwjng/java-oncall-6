@@ -1,4 +1,4 @@
-package oncall.domain;
+package oncall.domain.worker;
 
 import java.util.Objects;
 

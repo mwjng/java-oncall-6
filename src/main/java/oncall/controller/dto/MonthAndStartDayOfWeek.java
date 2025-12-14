@@ -1,7 +1,7 @@
 package oncall.controller.dto;
 
-import oncall.domain.DayOfWeek;
-import oncall.domain.Month;
+import oncall.domain.date.DayOfWeek;
+import oncall.domain.date.Month;
 
 public record MonthAndStartDayOfWeek(
         Month month,

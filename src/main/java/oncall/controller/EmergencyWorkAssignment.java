@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.function.Supplier;
 import oncall.controller.dto.MonthAndStartDayOfWeek;
 import oncall.controller.parser.EmergencyWorkInputParser;
-import oncall.domain.AssignmentService;
-import oncall.domain.EmergencyWorkers;
-import oncall.domain.Workday;
-import oncall.domain.Workers;
+import oncall.domain.assignment.AssignmentService;
+import oncall.domain.worker.EmergencyWorkers;
+import oncall.domain.assignment.Workday;
+import oncall.domain.worker.Workers;
 import oncall.view.InputView;
 import oncall.view.OutputView;
 
