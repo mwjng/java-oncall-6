@@ -12,17 +12,19 @@ public enum DayOfWeek {
     SATURDAY("토"),
     SUNDAY("일");
 
-    private final String name;
+    private static final DayOfWeek[] DAYS = DayOfWeek.values();
 
-    DayOfWeek(String name) {
-        this.name = name;
+    private final String displayName;
+
+    DayOfWeek(String displayName) {
+        this.displayName = displayName;
     }
 
-    public static DayOfWeek of(String inputDayOfWeek) {
-        return Arrays.stream(values())
-                .filter(dayOfWeek -> dayOfWeek.name.equals(inputDayOfWeek))
+    public static DayOfWeek of(String input) {
+        return Arrays.stream(DAYS)
+                .filter(day -> day.displayName.equals(input))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("올바르지 않은 요일 입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("올바르지 않은 요일입니다."));
     }
 
     public boolean isWeekend() {
@@ -30,13 +32,10 @@ public enum DayOfWeek {
     }
 
     public DayOfWeek next() {
-        if (this == SUNDAY) {
-            return MONDAY;
-        }
-        return DayOfWeek.values()[ordinal() + 1];
+        return DAYS[(ordinal() + 1) % DAYS.length];
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayName() {
+        return displayName;
     }
 }

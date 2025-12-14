@@ -35,10 +35,10 @@ public class OutputView {
             DayOfWeek dayOfWeek = date.getDayOfWeek();
 
             if (date.isHoliday() && !dayOfWeek.isWeekend()) {
-                System.out.println(month.getName() + " " + day + "일 " + dayOfWeek.getName() + "(휴일) " + worker.getNickname());
+                System.out.println(month.getMonthNumber() + "월 " + day + "일 " + dayOfWeek.getDisplayName() + "(휴일) " + worker.getNickname());
                 continue;
             }
-            System.out.println(month.getName() + " " + day + "일 " + dayOfWeek.getName() + " " + worker.getNickname());
+            System.out.println(month.getMonthNumber() + "월 " + day + "일 " + dayOfWeek.getDisplayName() + " " + worker.getNickname());
         }
     }
 }

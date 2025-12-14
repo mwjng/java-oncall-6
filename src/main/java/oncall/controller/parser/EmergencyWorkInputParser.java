@@ -9,7 +9,7 @@ public class EmergencyWorkInputParser {
 
     public MonthAndStartDayOfWeek parseMonthAndStartDayOfWeek(String input) {
         String[] parts = input.split(",");
-        Month month = Month.of(parts[0]);
+        Month month = Month.of(Integer.parseInt(parts[0]));
         DayOfWeek dayOfWeek = DayOfWeek.of(parts[1]);
 
         return new MonthAndStartDayOfWeek(month, dayOfWeek);
